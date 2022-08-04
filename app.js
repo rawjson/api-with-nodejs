@@ -6,8 +6,8 @@ Sever is exposed from this file
 
 const express = require('express');
 const sqllite3 = require('sqlite3');
-
 const dataset = require('./dataset.json');
+const inspectBody = require('./middlewares/inspectBody');
 
 const app = express();
 const port = 8080;
@@ -70,7 +70,6 @@ db.serialize(async () => {
   await createDatasetIfEmpty();
 });
 
-
 // ----->  Our app routes start here
 
 app.use(express.json()); // for accepting json body
@@ -93,57 +92,48 @@ app.get('/all', async (req, res) => {
 
 // ------> 1. add a new record to the employees table
 
-app.post('/add', async (req, res) => {
+app.post('/add', inspectBody, async (req, res) => {
   const obj = req.body;
-
-
-  // ----> check if the body is an object
-  if (typeof obj === 'object') {
-    Object.keys(obj).forEach((k) => {
-      // ---- remove keys with null values
-      if (obj[k] == null) delete obj[k];
-    });
-    try {
-      await query(`
+  try {
+    await query(
+      `
         INSERT INTO employees (
           name,
           salary,
           currency,
           department,
-          on_contract, 
+          on_contract,
           sub_department
         ) VALUES (
-          "${obj.name}", 
-          "${obj.salary}", 
-          "${obj.currency}", 
-          "${obj.department}", 
+          "${obj.name}",
+          "${obj.salary}",
+          "${obj.currency}",
+          "${obj.department}",
           ${obj.on_contract ? 1 : 0},
           "${obj.sub_department}")`,
-        'run'
-      )
-      res.json({ message: 'Record added successfully', record: obj });
-    } catch (err) {
-      console.log(err.stack);
-      res.status(400).json({ message: 'Failed to save record check logs' });
-    }
+      'run'
+    );
+    res.json({ message: 'Record added successfully', record: obj });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(400).json({ message: 'Failed to save record check logs' });
   }
 });
-
 
 // ------> 3. delete a record from the dataset
 
 app.delete('/:id', async (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
   try {
     if (id) {
-      await query(`DELETE FROM employees WHERE id = ${id}`)
-      res.json({ message: `Employee with id:${id} is deleted` })
+      await query(`DELETE FROM employees WHERE id = ${id}`);
+      res.json({ message: `Employee with id:${id} is deleted` });
     } else {
       res.json({ message: `You forgot to provide id in param` });
     }
   } catch (err) {
     console.log(err.stack);
-    res.status(400).json({ error: 'Failed to delete employee' })
+    res.status(400).json({ error: 'Failed to delete employee' });
   }
 });
 
@@ -155,7 +145,6 @@ app.delete('/:id', async (req, res) => {
 // ------> 6. fetch SS for each department and sub department
 
 app.get('/ss', async (req, res) => {
-
   let employees;
   // if our api consumer is querying for something
   // otherwise query all employees
@@ -166,13 +155,17 @@ app.get('/ss', async (req, res) => {
         // ---->
         // query those who are on contract
         // ---->
-        employees = await query(`SELECT * FROM employees WHERE on_contract = ${1}`)
+        employees = await query(
+          `SELECT * FROM employees WHERE on_contract = ${1}`
+        );
         break;
       case 'false':
         // ---->
         // query those who are not on contract
         // ---->
-        employees = await query(`SELECT * FROM employees WHERE on_contract = ${0}`)
+        employees = await query(
+          `SELECT * FROM employees WHERE on_contract = ${0}`
+        );
         break;
     }
   } else if (req.query.department) {
@@ -185,7 +178,7 @@ app.get('/ss', async (req, res) => {
       SELECT * FROM employees 
       WHERE department = "${req.query.department}"
       AND sub_department = "${req.query.sub_department}"
-      `)
+      `);
     } else {
       // ---->
       // query employees from a specific department
@@ -193,33 +186,31 @@ app.get('/ss', async (req, res) => {
       employees = await query(`
       SELECT * FROM employees 
       WHERE department = "${req.query.department}"
-      `)
+      `);
     }
     // ---->
   } else {
     // ---->
     // query all employees
-    employees = await query(`SELECT * FROM employees`)
+    employees = await query(`SELECT * FROM employees`);
     // ---->
   }
 
   let sumOfSalaries = 0;
-  let salaries = []
+  let salaries = [];
 
   for (let i = 0; i < employees.length; i++) {
-    sumOfSalaries += Number(employees[i].salary)
-    salaries.push(employees[i].salary)
+    sumOfSalaries += Number(employees[i].salary);
+    salaries.push(employees[i].salary);
   }
 
-  const mean = Math.round(sumOfSalaries / employees.length)
-  const max = Math.max(...salaries)
-  const min = Math.min(...salaries)
+  const mean = Math.round(sumOfSalaries / employees.length);
+  const max = Math.max(...salaries);
+  const min = Math.min(...salaries);
 
   res.json({ mean, max, min });
 });
 
-
 app.listen(port, () => {
   console.log(`-----> Server Running on - http://localhost:${port}`);
 });
-
