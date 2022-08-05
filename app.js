@@ -141,11 +141,6 @@ app.post('/signin', async (req, res) => {
     } else {
       const random = require('./random');
       const session_id = random();
-      await query(`
-      UPDATE auth_users 
-      SET session_id = "${session_id}"
-      WHERE username = "${username}"
-      `);
       res.cookie('session_id', session_id, {
         maxAge: 86400 * 1000,
         signed: true,
@@ -159,11 +154,6 @@ app.post('/signin', async (req, res) => {
 
 app.post('/signout', async (req, res) => {
   res.clearCookie('session_id');
-  await query(`
-  UPDATE auth_users 
-  SET session_id = ""
-  WHERE session_id = "${req.signedCookies.session_id}"
-  `);
   res.json({ message: 'You have been signed out' });
 });
 
