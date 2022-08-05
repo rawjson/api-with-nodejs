@@ -2,6 +2,12 @@
 
 This is a working example of Node.js and Express.js App to explain the working of a simple backend APIs. Created to explain how APIs work with express.
 
+Before, running this app, use a random string as a secret value in your `.env` file.
+
+```
+SECRET=     // any random string will work
+```
+
 Use the following to signin:
 
 ```
