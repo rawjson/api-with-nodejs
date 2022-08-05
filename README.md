@@ -60,5 +60,5 @@ docker run -p 8080:8080 -it api-with-node:v1
 ```
 
 ```
-    Prepared by: Navninder
+Prepared by: Navninder
 ```
