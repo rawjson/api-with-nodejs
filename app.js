@@ -120,6 +120,8 @@ app.get('/', async (req, res) => {
     'POST /add': 'add a new employee',
     'DELETE /:id': 'deletes an employee',
     'GET /ss': 'Get summary statistics',
+    'QUERY /ss':
+      'Query the /ss with conditions "on_contract=true/false" Or call employees of a department or sub_department',
   };
   description = 'This app uses REST APIs and returns and accepts JSON response';
   res.json({ message, description, routes, port });
