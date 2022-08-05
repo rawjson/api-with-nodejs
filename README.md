@@ -2,7 +2,7 @@
 
 This is a working example of Node.js and Express.js App to explain the working of a simple backend APIs. Created to explain how APIs work with express.
 
-Before, running this app, use a random string as a secret value in your `.env` file.
+Before running this app, use a random string as a secret value in your `.env` file.
 
 ```
 SECRET=     // any random string will work
@@ -18,20 +18,20 @@ Use the following to signin:
 ```
 
 `POST /signin`
-: 'signin to the app'
+: signin to the app
 
 `GET /all`
-: 'get all employees'
+: get all employees
 
 `POST /add`
-: 'add a new employee'
+: add a new employee
 
-`DELETE /:id`: 'deletes an employee'
+`DELETE /:id`: deletes an employee
 
-`GET /ss`: 'Get summary statistics'
+`GET /ss`: Get summary statistics
 
 `QUERY /ss`
-: 'query the /ss with conditions "on_contract=true/false" Or call employees of a department or sub_department',
+: query the /ss with conditions "on_contract=true/false" Or call employees of a department or sub_department,
 
 ---
 
