@@ -13,12 +13,17 @@ const inspectSession = (query) => {
 
   return async (req, res, next) => {
     const url = req.originalUrl;
-    if (url !== '/signin') {
+
+    //---> feed the array for the routes that you want to be public
+    const publicRoutes = ['/signin', '/'];
+
+    //---> then validate the validate the routes
+    if (publicRoutes.indexOf(url) < 0) {
       const session_id = req.cookies.session_id;
       const [user] = await query(`
-    SELECT * FROM auth_users 
-    WHERE session_id = "${session_id}"
-    `);
+        SELECT * FROM auth_users 
+        WHERE session_id = "${session_id}"
+        `);
       if (user?.session_id) {
         return next();
       } else {
