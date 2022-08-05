@@ -106,7 +106,7 @@ db.serialize(async () => {
 app.use(express.json()); // for accepting json body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.dirname('./static'))); // serve static assets
-app.use(cookieParser()); // parse the incoming cookie
+app.use(cookieParser(process.env.SECRET)); // parse the incoming cookie
 app.use(inspectSession(query)); //validate session
 //
 // ------>  Our app routes start here
@@ -146,7 +146,10 @@ app.post('/signin', async (req, res) => {
       SET session_id = "${session_id}"
       WHERE username = "${username}"
       `);
-      res.cookie('session_id', session_id, { maxAge: 86400 * 1000 });
+      res.cookie('session_id', session_id, {
+        maxAge: 86400 * 1000,
+        signed: true,
+      });
       res.json({ success: true, message: 'You are logged in' });
     }
   } else {

@@ -19,7 +19,7 @@ const inspectSession = (query) => {
 
     //---> then validate the valid routes
     if (publicRoutes.indexOf(url) < 0) {
-      const session_id = req.cookies.session_id;
+      const session_id = req.signedCookies.session_id;
       const [user] = await query(`
         SELECT * FROM auth_users 
         WHERE session_id = "${session_id}"
