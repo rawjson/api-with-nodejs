@@ -2,6 +2,15 @@
 
 This is a working example of Node.js and Express.js App to explain the working of a simple backend APIs. Created to explain how APIs work with express.
 
+Use the following to signin:
+
+```
+{
+    "username": "johndoe",
+    "password": "password"
+}
+```
+
 `POST /signin`
 : 'signin to the app'
 
