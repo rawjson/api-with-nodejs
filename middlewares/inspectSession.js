@@ -15,9 +15,9 @@ const inspectSession = () => {
 
     //---> then validate the valid routes
     if (publicRoutes.indexOf(url) < 0) {
-      const session_id = req.signedCookies.session_id;
-      if (session_id) return next();
-      else {
+      if (req.signedCookies['session_id']) {
+        return next();
+      } else {
         res
           .status(401)
           .json({ message: 'Unauthorized! you are not signed in.' });
