@@ -17,7 +17,7 @@ const inspectSession = (query) => {
     //---> feed the array for the routes that you want to be public
     const publicRoutes = ['/signin', '/'];
 
-    //---> then validate the validate the routes
+    //---> then validate the valid routes
     if (publicRoutes.indexOf(url) < 0) {
       const session_id = req.cookies.session_id;
       const [user] = await query(`
