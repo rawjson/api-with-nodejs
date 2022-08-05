@@ -1,13 +1,18 @@
 /* 
 
-Sever is exposed from this file
+Server is exposed from this file
 
 */
 
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const path = require('path');
 const sqllite3 = require('sqlite3');
 const dataset = require('./dataset.json');
 const inspectBody = require('./middlewares/inspectBody');
+const inspectSession = require('./middlewares/inspectSession');
+
+require('dotenv').config();
 
 const app = express();
 const port = 8080;
@@ -28,7 +33,7 @@ const createDatasetIfEmpty = async () => {
   const existingSet = await query('SELECT * FROM employees');
 
   // if empty, prefill dataset for our API consumer
-  if (existingSet?.length === 0) {
+  if (!existingSet?.length) {
     for (let i = 0; i < dataset.length; i++) {
       await query(
         `INSERT INTO employees (
@@ -49,6 +54,20 @@ const createDatasetIfEmpty = async () => {
       );
     }
   }
+
+  const authUsers = await query('SELECT * FROM auth_users');
+
+  if (!authUsers?.length) {
+    await query(
+      `INSERT INTO auth_users (
+        username,
+        password
+      ) VALUES (
+        "johndoe",
+        "password"
+      )`
+    );
+  }
 };
 
 db.serialize(async () => {
@@ -66,21 +85,81 @@ db.serialize(async () => {
     'run'
   );
 
+  // for the sake of simplicity we are not using password hashing
+  await query(
+    `CREATE TABLE IF NOT EXISTS auth_users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE, 
+      password TEXT,
+      session_id TEXT UNIQUE
+    )`,
+    'run'
+  );
+
   // invoke the fn decalred above
   await createDatasetIfEmpty();
 });
 
-// ----->  Our app routes start here
+//
+// -----> use the necessary built-in middlewares
 
 app.use(express.json()); // for accepting json body
-
-// ------> Main route/home page of our app
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.dirname('./static'))); // serve static assets
+app.use(cookieParser()); // parse the incoming cookie
+app.use(inspectSession(app, query)); //validate session
+//
+// ------>  Our app routes start here
+// ------>  Main route/home page of our app
 
 app.get('/', async (req, res) => {
   const message = 'Welcome to the Solution of NodeJs Problem Statement.';
-  const route = '/';
+  const routes = {
+    'POST /signin': 'signin to the app',
+    'GET /all': 'get all employees',
+    'POST /add': 'add a new employee',
+    'DELETE /:id': 'deletes an employee',
+    'GET /ss': 'Get summary statistics',
+  };
   description = 'This app uses REST APIs and returns and accepts JSON response';
-  res.json({ message, description, route, port });
+  res.json({ message, description, routes, port });
+});
+
+app.post('/signin', async (req, res) => {
+  const { username, password } = req.body;
+  const [user] = await query(
+    `SELECT username, password 
+    FROM auth_users 
+    WHERE username = "${username}"`
+  );
+
+  if (user) {
+    if (user.password !== password) {
+      res.status(400).json({ error: 'Username or password does not match' });
+    } else {
+      const random = require('./random');
+      const session_id = random();
+      await query(`
+      UPDATE auth_users 
+      SET session_id = "${session_id}"
+      WHERE username = "${username}"
+      `);
+      res.cookie('session_id', session_id, { maxAge: 86400 * 1000 });
+      res.json({ success: true, message: 'You are logged in' });
+    }
+  } else {
+    res.status(400).json({ error: 'Username does not exist' });
+  }
+});
+
+app.post('/signout', async (req, res) => {
+  await query(`
+  UPDATE auth_users 
+  SET session_id = ""
+  WHERE session_id = "${req.cookies.session_id}"
+  `);
+  res.clearCookie();
+  res.json({ message: 'You have been signed out' });
 });
 
 // -----> retrieve all records from employees

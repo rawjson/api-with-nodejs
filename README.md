@@ -2,10 +2,22 @@
 
 This is a working example of Node.js and Express.js App to explain the working of a simple backend APIs. Created to explain how APIs work with express.
 
-To get started run the following command
+To get started run the following command and install dependencies:
 
 ```
 $ npm run install
+```
+
+Run the development server:
+
+```
+$ npm run dev
+```
+
+Start the production server:
+
+```
+$ npm run start
 ```
 
 A dockerfile is also available in case you want to use the containerize and ship it. To build a containerized app use the following command.
