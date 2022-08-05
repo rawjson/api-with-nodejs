@@ -107,7 +107,7 @@ app.use(express.json()); // for accepting json body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.dirname('./static'))); // serve static assets
 app.use(cookieParser()); // parse the incoming cookie
-app.use(inspectSession(app, query)); //validate session
+app.use(inspectSession(query)); //validate session
 //
 // ------>  Our app routes start here
 // ------>  Main route/home page of our app
