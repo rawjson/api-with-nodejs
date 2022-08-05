@@ -6,11 +6,7 @@ for the sake of simplicity
 
 */
 
-const inspectSession = (query) => {
-  //
-  //---->  uses the sqlite query to validate the session_id
-  //
-
+const inspectSession = () => {
   return async (req, res, next) => {
     const url = req.originalUrl;
 
@@ -20,13 +16,8 @@ const inspectSession = (query) => {
     //---> then validate the valid routes
     if (publicRoutes.indexOf(url) < 0) {
       const session_id = req.signedCookies.session_id;
-      const [user] = await query(`
-        SELECT * FROM auth_users 
-        WHERE session_id = "${session_id}"
-        `);
-      if (user?.session_id) {
-        return next();
-      } else {
+      if (session_id) return next();
+      else {
         res
           .status(401)
           .json({ message: 'Unauthorized! you are not signed in.' });
