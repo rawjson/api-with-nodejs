@@ -109,8 +109,8 @@ app.use(express.static(path.dirname('./static'))); // serve static assets
 app.use(cookieParser(process.env.SECRET)); // parse the incoming cookie
 app.use(inspectSession()); //validate session
 //
-// ------>  Our app routes start here
-// ------>  Main route/home page of our app
+// ------>  routes start from here
+// ------>  Main route for home page is '/'
 
 app.get('/', async (req, res) => {
   const message = 'Welcome to the Solution of NodeJs Problem Statement.';
@@ -215,28 +215,28 @@ app.delete('/:id', async (req, res) => {
 // ------------ --------- AND -------------------
 // ------> 4. fetch summary statistics for records
 //             -> that satisfy "on_contract": true
-// ------> 5/ fetch SS for each department
+// ------> 5. fetch SS for each department
 // ------> 6. fetch SS for each department and sub department
 
 app.get('/ss', async (req, res) => {
   let employees;
-  // if our api consumer is querying for something
+  // check if our api consumer is querying for something
   // otherwise query all employees
 
   if (req.query.on_contract) {
     switch (req.query.on_contract) {
       case 'true':
-        // ---->
-        // query those who are on contract
-        // ---->
+        //
+        // ----> query those who are on contract
+
         employees = await query(
           `SELECT * FROM employees WHERE on_contract = ${1}`
         );
         break;
       case 'false':
-        // ---->
-        // query those who are not on contract
-        // ---->
+        //
+        // ----> query those who are not on contract
+
         employees = await query(
           `SELECT * FROM employees WHERE on_contract = ${0}`
         );
@@ -245,29 +245,28 @@ app.get('/ss', async (req, res) => {
   } else if (req.query.department) {
     // ---->
     if (req.query.department && req.query.sub_department) {
-      // ---->
-      // query employees from both department and sub department
-      // ---->
+      //
+      // ----> query employees from both department and sub department
+
       employees = await query(`
       SELECT * FROM employees 
       WHERE department = "${req.query.department}"
       AND sub_department = "${req.query.sub_department}"
       `);
     } else {
-      // ---->
-      // query employees from a specific department
-      // ---->
+      //
+      // ----> query employees from a specific department
+
       employees = await query(`
       SELECT * FROM employees 
       WHERE department = "${req.query.department}"
       `);
     }
-    // ---->
   } else {
-    // ---->
-    // query all employees
+    //
+    // ----> query all employees
+
     employees = await query(`SELECT * FROM employees`);
-    // ---->
   }
 
   let sumOfSalaries = 0;
