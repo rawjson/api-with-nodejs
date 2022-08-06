@@ -10,7 +10,7 @@ const inspectSession = () => {
   return async (req, res, next) => {
     const url = req.originalUrl;
 
-    //---> feed the array for the routes that you want to be public
+    //---> feed the array any routes that you want to be public
     const publicRoutes = ['/signin', '/'];
 
     //---> then validate the valid routes
