@@ -13,7 +13,7 @@ const inspectSession = () => {
     //---> feed the array any routes that you want to be public
     const publicRoutes = ['/signin', '/'];
 
-    //---> then validate the valid routes
+    //---> then validate the cookie and expose a protected route
     if (publicRoutes.indexOf(url) < 0) {
       if (req.signedCookies['session_id']) {
         return next();
