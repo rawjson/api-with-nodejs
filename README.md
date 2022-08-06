@@ -57,9 +57,11 @@ Start the production server:
 $ npm run start
 ```
 
-A dockerfile is also available in case you want to use the containerize and ship it. To build a containerized app use the following command.
+A dockerfile is also available in case you want to containerize and ship it.
 
-Please note that this file works with windows and when using MacOS the path might not resolve. You can change the WORKDIR and COPY path that can resolve when containerizing the app.
+- Please note that this file works with windows and when using MacOS the path might not resolve.
+- You can change the WORKDIR and COPY path that can resolve when containerizing the app.
+- To build a containerized app use the following command.
 
 ```
 docker build -t api-with-node:v1 .
