@@ -41,7 +41,7 @@ const inspectBody = async (req, res, next) => {
     } else {
       //
       // ---> Here we check to see if the data type of keys
-      //      in the variable employee matches with the recieved object
+      //      in the object employee matches with the recieved object
       //
       Object.keys(obj).find((o, y) => {
         if (o === Object.keys(employee)[x])
