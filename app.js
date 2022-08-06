@@ -29,20 +29,13 @@ serializeDB();
 
 // ------>  import our routes
 // ------>  Main route for home page is '/'
-const home = require('./routes/home');
-const addEmployee = require('./routes/addEmployee');
-const retreiveAllEmployees = require('./routes/allEmployees');
-const authenticate = require('./routes/authenticate');
-const deleteEmployee = require('./routes/deleteEmployee');
-const summaryStatistics = require('./routes/summaryStatistics');
-
-home(app, port);
-addEmployee(app);
-retreiveAllEmployees(app);
-authenticate(app);
-deleteEmployee(app);
-summaryStatistics(app);
+require('./routes/home')(app, port);
+require('./routes/addEmployee')(app);
+require('./routes/allEmployees')(app);
+require('./routes/authenticate')(app);
+require('./routes/deleteEmployee')(app);
+require('./routes/summaryStatistics')(app);
 
 app.listen(port, () => {
-  console.log(`-----> Server Running on - http://localhost:${port}`);
+  console.log(`-----> Server Running on port:${port}`);
 });
