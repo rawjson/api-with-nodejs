@@ -2,11 +2,15 @@
 
 This is a working example of Node.js and Express.js App to explain the working of a simple backend APIs. Created to explain how APIs work with express.
 
+## ! important
+
 Before running this app, use a random string as a secret value in your `.env` file.
 
 ```
 SECRET=     // any random string will work
 ```
+
+Use either `Insomnia API` or `Postman` to get the cookie from server.
 
 Use the following to signin:
 
@@ -54,6 +58,8 @@ $ npm run start
 ```
 
 A dockerfile is also available in case you want to use the containerize and ship it. To build a containerized app use the following command.
+
+Please note that this file works with windows and when using MacOS the path might not resolve. You can change the WORKDIR and COPY path that can resolve when containerizing the app.
 
 ```
 docker build -t api-with-node:v1 .
