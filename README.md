@@ -6,6 +6,8 @@ This is a working example of Node.js and Express.js App to explain the working o
 
 Before running this app, use a random string as a secret value in your `.env` file.
 
+- Please rename the `example.env` file to `.env` and then proceed with the following commands.
+
 ```
 SECRET=     // any random string will work
 ```
