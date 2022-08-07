@@ -1,6 +1,6 @@
 # Node.js x Express.js Backend APIs Example App
 
-This is a working example of Node.js and Express.js App to explain the working of a simple backend APIs. Created to explain how APIs work with express.
+This is a working example of Node.js and Express.js App to explain the working of simple backend APIs. Created to explain how APIs work with express.
 
 ## ! important
 
