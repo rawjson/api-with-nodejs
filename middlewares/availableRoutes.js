@@ -26,9 +26,11 @@ const availableRoutes = (req, res, next) => {
   const values = Object.values(routes);
   const routeIndex = keys.indexOf(path);
 
-  const fourOFour = () =>
+  const fourOFour = (
+    e = 'The route you are trying to access is not available'
+  ) =>
     res.status(404).json({
-      error: 'The route you are trying to access is not available',
+      error: e,
     });
 
   const validator = ({ greenSignal = true } = {}) => {
@@ -42,7 +44,7 @@ const availableRoutes = (req, res, next) => {
         //   we check if the user if querying for the right data
         if (availableQueries.indexOf(queryObj[0] || queryObj[1]) < 0) {
           greenSignal = false;
-          res.status(404).json({ error: 'Requested query is not available' });
+          fourOFour('Requested query is not available');
         }
       }
     }

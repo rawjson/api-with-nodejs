@@ -20,7 +20,7 @@ const inspectSession = () => {
       } else {
         res
           .status(401)
-          .json({ message: 'Unauthorized! you are not signed in.' });
+          .json({ message: 'Unauthorized! You are not signed in.' });
       }
     } else {
       return next();
