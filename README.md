@@ -59,6 +59,12 @@ Start the production server:
 $ npm run start
 ```
 
+## Logging
+
+Morgan package is used in this example for logging all the rquests in `access.log` file that is created automatically when the server is started. Please use the `flag - 'r+'` when going to production to retain all logs.
+
+## Container Image
+
 A dockerfile is also available in case you want to containerize and ship it.
 
 - Please note that this file works with windows and when using MacOS the path might not resolve.
@@ -75,6 +81,5 @@ Then run the container using the following command
 docker run -p 8080:8080 -it api-with-node:v1
 ```
 
-```
-Prepared by: Navninder
-```
+Prepared by
+: Navninder

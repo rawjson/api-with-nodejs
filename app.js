@@ -16,6 +16,13 @@ const app = express();
 const port = 8080;
 
 require('dotenv').config();
+
+// -----> By default fs will recreate the access.log file
+//        everytime the server is started
+const accessLogStream = require('fs').createWriteStream(
+  require('path').join(__dirname, 'access.log')
+  // { flags: 'r+' }  please uncomment this flag when going to production
+);
 //
 // -----> use the necessary built-in middlewares
 app.use(express.static(path.dirname('./static'))); // serve static assets
@@ -24,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(availableRoutes); // for validating available routes
 app.use(cookieParser(process.env.SECRET)); // parse the incoming cookie
 app.use(inspectSession()); //validate session
+app.use(require('morgan')('combined', { stream: accessLogStream }));
 
 //  setup database
 serializeDB();
