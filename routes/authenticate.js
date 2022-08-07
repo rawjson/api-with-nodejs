@@ -29,7 +29,7 @@ const authenticate = (app) => {
           return a random string
         */
         res.cookie('session_id', session_id, {
-          maxAge: 86400 * 1000,
+          maxAge: 86400 * 1000, // valid for 24 hours
           signed: true,
         });
         res.json({ success: true, message: 'You are signed in' });
