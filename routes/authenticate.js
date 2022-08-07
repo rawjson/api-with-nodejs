@@ -32,7 +32,7 @@ const authenticate = (app) => {
           maxAge: 86400 * 1000,
           signed: true,
         });
-        res.json({ success: true, message: 'You are logged in' });
+        res.json({ success: true, message: 'You are signed in' });
       }
     } else {
       res.status(400).json({ error: 'Username does not exist' });

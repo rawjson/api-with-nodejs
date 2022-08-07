@@ -10,6 +10,7 @@ const path = require('path');
 
 const inspectSession = require('./middlewares/inspectSession');
 const serializeDB = require('./setupdb/serializeDB');
+const availableRoutes = require('./middlewares/availableRoutes');
 
 const app = express();
 const port = 8080;
@@ -17,10 +18,10 @@ const port = 8080;
 require('dotenv').config();
 //
 // -----> use the necessary built-in middlewares
-
+app.use(express.static(path.dirname('./static'))); // serve static assets
 app.use(express.json()); // for accepting json body
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.dirname('./static'))); // serve static assets
+app.use(availableRoutes); // for validating available routes
 app.use(cookieParser(process.env.SECRET)); // parse the incoming cookie
 app.use(inspectSession()); //validate session
 
