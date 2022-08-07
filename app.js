@@ -31,9 +31,9 @@ serializeDB();
 // ------>  import our routes
 // ------>  Main route for home page is '/'
 require('./routes/home')(app, port);
-require('./routes/addEmployee')(app);
-require('./routes/allEmployees')(app);
 require('./routes/authenticate')(app);
+require('./routes/allEmployees')(app);
+require('./routes/addEmployee')(app);
 require('./routes/deleteEmployee')(app);
 require('./routes/summaryStatistics')(app);
 
