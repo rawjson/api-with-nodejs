@@ -32,9 +32,11 @@ Use the following to signin:
 `POST /add`
 : add a new employee
 
-`DELETE /:id`: deletes an employee
+`DELETE /:id`
+: deletes an employee
 
-`GET /ss`: Get summary statistics
+`GET /ss` 
+: Get summary statistics
 
 `QUERY /ss`
 : query the /ss with conditions "on_contract=true/false" Or call employees of a department or sub_department,
@@ -61,7 +63,7 @@ $ npm run start
 
 ## Logging
 
-Morgan package is used in this example for logging all the rquests in `access.log` file that is created automatically when the server is started. Please use the `flag - 'r+'` when going to production to retain all logs.
+Morgan package is used in this example for logging all the rquests in `access.log` file that is created automatically when the server is started. Please use the `flag: 'r+'` when going to production to retain all logs.
 
 ## Container Image
 
