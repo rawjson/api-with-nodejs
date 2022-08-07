@@ -3,7 +3,7 @@
 To validate if API consumer is accessing a route that is available
 returns a 404 response otherwise. It might get harder to implement 
 this logic when there are a lot of routes. It is recommended to use a 
-library such as \**class-validator**\ instead of going your own way.
+library instead of going your own way.
 
 */
 
