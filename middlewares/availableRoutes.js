@@ -41,7 +41,7 @@ const availableRoutes = (req, res, next) => {
       //  extract the query object from request
       const queryObj = Object.keys(req.query);
       if (queryObj.length) {
-        //   we check if the user if querying for the right data
+        //   we check if the user is querying for the right data
         if (availableQueries.indexOf(queryObj[0] || queryObj[1]) < 0) {
           greenSignal = false;
           fourOFour('Requested query is not available');
